@@ -8,9 +8,10 @@ from matplotlib.pyplot import scatter, errorbar
 from PIL import Image as im
 import time as tm
 from time import *
+from math import log10
 
-filepathod = r'C:\Users\jacob\Desktop\Syborgs\Robert Data\RM OD1 10.2.20.csv'
-filepathfl = r'C:\Users\jacob\Desktop\Syborgs\Robert Data\RM FL1 10.2.20.csv'
+filepathod = r'C:\Users\jacob\Desktop\Syborgs\Jithran Data\11.23.20 NAL pAJM.337 - OD2.csv'
+filepathfl = r'C:\Users\jacob\Desktop\Syborgs\Jithran Data\11.23.20 NAL pAJM.337 - FL2.csv'
 
 np.seterr(divide='ignore', invalid='ignore')
 
@@ -45,11 +46,17 @@ for i in range(nrow):
     time_as_float =  float((hr*60) + (mn))
     time[i] = time_as_float
 
-
+"""
 number_of_experiments = int(input("How many experiments does this dataset contain?: ")) 
 number_of_letters = int(input("How many letters are used in this experiment?: ")) 
 number_of_wells = int(input("How many wells are there per letter in each experiment?: ")) 
 number_per_replicate = int(input("How many wells are there per replicate?: ")) 
+"""
+
+number_of_experiments = 1
+number_of_letters = 8
+number_of_wells = 12
+number_per_replicate = 3
 
 replicate_array_od = np.empty((nrow,number_per_replicate), dtype = float)
 replicate_array_fl = np.empty((nrow,number_per_replicate), dtype = float)
@@ -169,7 +176,7 @@ for a in range(nrow):
         group_4 = group_1[:,(index_value_1, index_value_2, index_value_3)]
         
         z = 0
-        
+        1
         for z in range(number_per_replicate):
             od_clost = (np.abs(group_2[:,z] - od_chosn)).argmin()
             group_6[0,z,0] = group_2[int(od_clost),z]
@@ -189,13 +196,37 @@ for a in range(nrow):
 group_X = group_5/group_3
 
 
-X_ax = [0,0.2,0.4,0.8,1.2,2.4,5,10,15,20,30,50,70,90,110,130]      
+X_ax = [0,1,2.5,5,7.5,10,12.5,15,17.5,20,25,35,50,65,80,100,150,200,250,300,350,400,450,500,600,700,800,900,1000,1500,2000,2500]  
+
+
  
 plt.scatter(X_ax, group_X)
-plt.errorbar(X_ax, group_X[0,:], group_Y[0,:], capsize=10.0)
-plt.xlabel("aTC Concentration ng/mL")
+plt.errorbar(X_ax, group_X[0,:], group_Y[0,:],linestyle='None', capsize=5.0)
+plt.xlabel("IPTG Concentration uM")
 plt.ylabel("Per Cell Fluoresence")
-plt.title("Per Cell Fluoresence" + " " + "vs" + " " + "aTC Concentration ng/mL")
+plt.title("Per Cell Fluoresence" + " " + "vs" + " " + "IPTG Concentration uM")
+save_err = r'C:\Users\jacob\Desktop\Syborgs\Jithran Data\Graphs\10.9.20\BARS'
+suff = '\ERR'
+plt.savefig(save_err + suff)
+plt.show()
+plt.close()     
+
+"""
+L_X_ax = []
+
+for z in range(len(X_ax)-1):
+    L_X_ax.append(log10(X_ax[z+1]))
+"""
+
+
+
+plt.scatter(X_ax[1:], group_X[0,1:])
+plt.xscale('log')
+plt.errorbar(X_ax[1:], group_X[0,1:], group_Y[0,1:], linestyle='None', capsize=5.0)
+plt.grid(True)
+plt.xlabel("Log of IPTG Concentration uM")
+plt.ylabel("Per Cell Fluoresence")
+plt.title("Log Per Cell Fluoresence" + " " + "vs" + " " + "IPTG Concentration uM")
 save_err = r'C:\Users\jacob\Desktop\Syborgs\Jithran Data\Graphs\10.9.20\BARS'
 suff = '\ERR'
 plt.savefig(save_err + suff)
