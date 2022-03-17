@@ -63,13 +63,13 @@ for index, column_label in enumerate(column_labels):
     # skip replicates before the desired starting replicate
     if col_letter < starting_replicate[0]:
         continue
-    elif col_letter == starting_replicate[0] and col_number < int(starting_replicate[1]):
+    elif col_letter == starting_replicate[0] and col_number < int(starting_replicate[1:]):
         continue
 
     # stop after the user-specified end replicate
     if col_letter > ending_replicate[0]:
         break
-    elif col_letter == ending_replicate[0] and col_number > int(ending_replicate[1]):
+    elif col_letter == ending_replicate[0] and col_number > int(ending_replicate[1:]):
         break
 
     od_column_data = od_data[column_label].to_numpy()  # read the OD data for one column at a time
@@ -137,7 +137,6 @@ for index, column_label in enumerate(column_labels):
             plt.xlabel("Time")  # will need to convert column names (A7, B7, etc.) to actual numbers
             plt.ylabel("OD")
         fig_number += 1  # so that the next plot shows up in a separate figure
-
         replicate_EYFP_over_OD_dict.clear()  # reset for a new group of replicates
         replicate_EYFP_dict.clear()
         replicate_OD_dict.clear()
