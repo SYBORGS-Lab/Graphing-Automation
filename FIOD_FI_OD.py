@@ -24,21 +24,21 @@ fi_times_raw = np.array(
      fi_times_raw])  # convert timestamp to seconds to make math possible
 
 # some data is incorrectly formatted such that after 24 hours, the time resets to 0 hours.
-# if that is the case, ignore data beyond 24 hours
-# basically, if a subsequent time stamp is smaller than the previous time stamp, then
-# stop the clock at the previous time stamp value
+# this part fixes that by adding 24 hours every time the day resets
 od_times = []
 for t in od_times_raw:
     if len(od_times) > 0:
         if t < od_times[-1]:  # beginning of the next day
-            t += 86400
+            while t < od_times[-1]:
+                t += 86400
     od_times.append(t)
 
 fi_times = []
 for t in fi_times_raw:
     if len(fi_times) > 0:
         if t < fi_times[-1]:  # beginning of the next day
-            t += 86400
+            while t < fi_times[-1]:
+                t += 86400
     fi_times.append(t)
 
 # convert to arrays to allow element-wise operations
