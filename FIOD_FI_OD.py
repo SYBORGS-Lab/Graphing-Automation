@@ -49,14 +49,14 @@ fi_times = np.array(fi_times)
 column_labels = fi_data.columns[
                 2:]  # ignore the time column and T degree column, since they don't contain EYFP data.
 
-fig_number = 1
+fig_number = 1  # this helps to draw new figures for each set of replicates
 num_replicates = 3  # number of replicates for each inducer condition
-replicate_EYFP_over_OD_dict = {}  # list of all replicates that we want to plot
+replicate_EYFP_over_OD_dict = {}  # contains the replicates that we want to plot; resets after the plot is made
 replicate_EYFP_dict = {}
 replicate_OD_dict = {}
 
 for index, column_label in enumerate(column_labels):
-    # make a new figure every time the column letter changes
+    # make a new figure for each set of replicates
     col_letter = column_label[0]
     col_number = int(column_label[1:])  # number after the column letter. ex: C1 => column #1
 
@@ -99,7 +99,6 @@ for index, column_label in enumerate(column_labels):
     replicate_EYFP_dict[f'{col_letter}{col_number}'] = eyfps
     replicate_OD_dict[f'{col_letter}{col_number}'] = ods
 
-
     # convert seconds to hh:mm:ss
     nicer_formatted_times = []
     for t in times:
@@ -113,7 +112,7 @@ for index, column_label in enumerate(column_labels):
             plt.plot(nicer_formatted_times, data, label=f'{column_ID} EYFP/OD')  # plot data
             plt.xticks([i for i in range(len(nicer_formatted_times)) if i % 70 == 0])  # show every nth time stamp
             plt.legend()
-            plt.title(f'{column_ID} EYFP/OD')
+            plt.title(f'Columns {col_letter}{col_number - num_replicates + 1}:{col_letter}{col_number}\nEYFP/OD')
             plt.xlabel("Time")  # will need to convert column names (A7, B7, etc.) to actual numbers
             plt.ylabel("EYFP/OD")
         fig_number += 1
@@ -123,7 +122,7 @@ for index, column_label in enumerate(column_labels):
             plt.plot(nicer_formatted_times, data, label=f'{column_ID} EYFP')  # plot data
             plt.xticks([i for i in range(len(nicer_formatted_times)) if i % 70 == 0])  # show every nth time stamp
             plt.legend()
-            plt.title(f'{column_ID} EYFP')
+            plt.title(f'Columns {col_letter}{col_number - num_replicates + 1}:{col_letter}{col_number}\nEYFP')
             plt.xlabel("Time")  # will need to convert column names (A7, B7, etc.) to actual numbers
             plt.ylabel("EYFP")
         fig_number += 1
@@ -133,7 +132,7 @@ for index, column_label in enumerate(column_labels):
             plt.plot(nicer_formatted_times, data, label=f'{column_ID} OD')  # plot data
             plt.xticks([i for i in range(len(nicer_formatted_times)) if i % 70 == 0])  # show every nth time stamp
             plt.legend()
-            plt.title(f'{column_ID} OD')
+            plt.title(f'Columns {col_letter}{col_number - num_replicates + 1}:{col_letter}{col_number}\nOD')
             plt.xlabel("Time")  # will need to convert column names (A7, B7, etc.) to actual numbers
             plt.ylabel("OD")
         fig_number += 1  # so that the next plot shows up in a separate figure
